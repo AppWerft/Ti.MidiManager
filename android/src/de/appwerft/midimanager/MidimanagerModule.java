@@ -8,6 +8,9 @@
  */
 package de.appwerft.midimanager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 
@@ -15,52 +18,53 @@ import org.appcelerator.titanium.TiApplication;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.media.midi.MidiDeviceInfo;
+import android.media.midi.MidiManager;
 
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.kroll.common.TiConfig;
 
-
-@Kroll.module(name="Midimanager", id="de.appwerft.midimanager")
-public class MidimanagerModule extends KrollModule
-{
+@Kroll.module(name = "Midimanager", id = "de.appwerft.midimanager")
+public class MidimanagerModule extends KrollModule {
 
 	// Standard Debugging variables
 	private static final String LCAT = "MidimanagerModule";
 	private static final boolean DBG = TiConfig.LOGD;
 	private static Context ctx;
+	private static MidiManager mm;
+
 	// You can define constants with @Kroll.constant, for example:
 	// @Kroll.constant public static final String EXTERNAL_NAME = value;
 
-	public MidimanagerModule()
-	{
+	public MidimanagerModule() {
 		super();
 	}
 
 	@Kroll.onAppCreate
-	public static void onAppCreate(TiApplication app)
-	{
+	public static void onAppCreate(TiApplication app) {
 		Log.d(LCAT, "inside onAppCreate");
-		ctx=app.getApplicationContext();
+		ctx = app.getApplicationContext();
+		mm = (MidiManager) ctx.getSystemService(Context.MIDI_SERVICE);
+
 		// put module init code that needs to run when the application is created
 	}
 
 	// Methods
 	@Kroll.method
-	public boolean hasSystemFeature()
-	{
+	public boolean hasSystemFeature() {
 		return ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI);
 
 	}
 
-	// Properties
 	@Kroll.method
-	@Kroll.getProperty
-	public String getExampleProp()
-	{
-		Log.d(LCAT, "get example property");
-		return "hello world";
+	public Object[] getDevices() {
+		ArrayList<DeviceProxy> deviceList = new ArrayList<DeviceProxy>();
+		MidiDeviceInfo[] infos = mm.getDevices();
+	    for (MidiDeviceInfo info : infos) {
+	    	deviceList.add(new DeviceProxy(info));
+	    }
+	    return deviceList.toArray();
 	}
-
 
 	@Kroll.method
 	@Kroll.setProperty
@@ -69,4 +73,3 @@ public class MidimanagerModule extends KrollModule
 	}
 
 }
-

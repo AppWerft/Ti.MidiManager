@@ -21,6 +21,7 @@ import org.appcelerator.titanium.view.TiCompositeLayout.LayoutArrangement;
 import org.appcelerator.titanium.view.TiUIView;
 
 import android.app.Activity;
+import android.media.midi.MidiDeviceInfo;
 
 
 // This proxy can be created by calling Midimanager.createExample({message: "hello world"})
@@ -31,7 +32,7 @@ public class DeviceProxy extends KrollProxy
 	private static final String LCAT = "ExampleProxy";
 	private static final boolean DBG = TiConfig.LOGD;
 
-	
+	private  MidiDeviceInfo device;
 
 
 	// Constructor
@@ -40,7 +41,13 @@ public class DeviceProxy extends KrollProxy
 		super();
 	}
 
-	
+	// Constructor
+		public DeviceProxy(MidiDeviceInfo device)
+		{
+			super();
+			this.device= device;
+		}
+
 
 	// Handle creation options
 	@Override
@@ -55,9 +62,11 @@ public class DeviceProxy extends KrollProxy
 
 	// Methods
 	@Kroll.method
-	public void printMessage(String message)
-	{
-		Log.d(LCAT, "printing message: " + message);
+	public KrollDict getPorts()
+	{	KrollDict res = new KrollDict();
+		res.put("in",device.getInputPortCount());
+		res.put("out",device.getOutputPortCount());
+		return res;
 	}
 
 
