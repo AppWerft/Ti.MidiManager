@@ -8,6 +8,8 @@
  */
 package de.appwerft.midimanager;
 
+import java.util.ArrayList;
+
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollProxy;
 import org.appcelerator.kroll.annotations.Kroll;
@@ -22,37 +24,31 @@ import org.appcelerator.titanium.view.TiUIView;
 
 import android.app.Activity;
 import android.media.midi.MidiDeviceInfo;
-
+import android.media.midi.MidiDeviceInfo.PortInfo;
 
 // This proxy can be created by calling Midimanager.createExample({message: "hello world"})
-@Kroll.proxy(creatableInModule=MidimanagerModule.class)
-public class DeviceProxy extends KrollProxy
-{
+@Kroll.proxy(creatableInModule = MidimanagerModule.class)
+public class DeviceProxy extends KrollProxy {
 	// Standard Debugging variables
 	private static final String LCAT = "ExampleProxy";
 	private static final boolean DBG = TiConfig.LOGD;
 
-	private  MidiDeviceInfo device;
-
+	private MidiDeviceInfo device;
 
 	// Constructor
-	public DeviceProxy()
-	{
+	public DeviceProxy() {
 		super();
 	}
 
 	// Constructor
-		public DeviceProxy(MidiDeviceInfo device)
-		{
-			super();
-			this.device= device;
-		}
-
+	public DeviceProxy(MidiDeviceInfo device) {
+		super();
+		this.device = device;
+	}
 
 	// Handle creation options
 	@Override
-	public void handleCreationDict(KrollDict options)
-	{
+	public void handleCreationDict(KrollDict options) {
 		super.handleCreationDict(options);
 
 		if (options.containsKey("message")) {
@@ -60,25 +56,25 @@ public class DeviceProxy extends KrollProxy
 		}
 	}
 
-	// Methods
+	@Kroll.getProperty
 	@Kroll.method
-	public KrollDict getPorts()
-	{	KrollDict res = new KrollDict();
-		res.put("in",device.getInputPortCount());
-		res.put("out",device.getOutputPortCount());
-		return res;
+	public int getMessage() {
+		return device.getId();
+	}
+	@Kroll.getProperty
+	@Kroll.method
+	public int getType() {
+		return device.getType();
+	}
+	
+	@Kroll.getProperty
+	@Kroll.method
+	public Object[] getPorts() {
+		ArrayList<PortProxy> portList = new ArrayList<PortProxy>();
+		for (PortInfo port :  device.getPorts()) {
+			portList.add(new PortProxy(port));
+		}
+		return portList.toArray();
 	}
 
-
-	@Kroll.getProperty @Kroll.method
-	public String getMessage()
-	{
-        return "Hello World from my module";
-	}
-
-	@Kroll.setProperty @Kroll.method
-	public void setMessage(String message)
-	{
-	    Log.d(LCAT, "Tried setting module message to: " + message);
-	}
 }

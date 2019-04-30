@@ -21,31 +21,30 @@ import org.appcelerator.titanium.view.TiCompositeLayout.LayoutArrangement;
 import org.appcelerator.titanium.view.TiUIView;
 
 import android.app.Activity;
-
+import android.media.midi.MidiDeviceInfo.PortInfo;
 
 // This proxy can be created by calling Midimanager.createExample({message: "hello world"})
-@Kroll.proxy(creatableInModule=MidimanagerModule.class)
-public class PortProxy extends KrollProxy
-{
+@Kroll.proxy(creatableInModule = MidimanagerModule.class)
+public class PortProxy extends KrollProxy {
 	// Standard Debugging variables
 	private static final String LCAT = "ExampleProxy";
 	private static final boolean DBG = TiConfig.LOGD;
-
-	
-
+	private PortInfo port;
 
 	// Constructor
-	public PortProxy()
-	{
+	public PortProxy() {
 		super();
 	}
 
-	
+	// Constructor
+	public PortProxy(PortInfo port) {
+		super();
+		this.port = port;
+	}
 
 	// Handle creation options
 	@Override
-	public void handleCreationDict(KrollDict options)
-	{
+	public void handleCreationDict(KrollDict options) {
 		super.handleCreationDict(options);
 
 		if (options.containsKey("message")) {
@@ -53,23 +52,21 @@ public class PortProxy extends KrollProxy
 		}
 	}
 
-	// Methods
+	
+	@Kroll.getProperty
 	@Kroll.method
-	public void printMessage(String message)
-	{
-		Log.d(LCAT, "printing message: " + message);
+	public String getName() {
+		return port.getName();
 	}
 
-
-	@Kroll.getProperty @Kroll.method
-	public String getMessage()
-	{
-        return "Hello World from my module";
+	@Kroll.getProperty
+	@Kroll.method
+	public int getPortNumber() {
+		return port.getPortNumber();
 	}
-
-	@Kroll.setProperty @Kroll.method
-	public void setMessage(String message)
-	{
-	    Log.d(LCAT, "Tried setting module message to: " + message);
+	@Kroll.getProperty
+	@Kroll.method
+	public int getType() {
+		return port.getType();
 	}
 }
