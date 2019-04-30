@@ -28,20 +28,20 @@ import android.media.midi.MidiDeviceInfo.PortInfo;
 
 // This proxy can be created by calling Midimanager.createExample({message: "hello world"})
 @Kroll.proxy(creatableInModule = MidimanagerModule.class)
-public class DeviceProxy extends KrollProxy {
+public class MidiDeviceProxy extends KrollProxy {
 	// Standard Debugging variables
 	private static final String LCAT = "ExampleProxy";
 	private static final boolean DBG = TiConfig.LOGD;
 
-	private MidiDeviceInfo device;
+	public MidiDeviceInfo device;
 
 	// Constructor
-	public DeviceProxy() {
+	public MidiDeviceProxy() {
 		super();
 	}
 
 	// Constructor
-	public DeviceProxy(MidiDeviceInfo device) {
+	public MidiDeviceProxy(MidiDeviceInfo device) {
 		super();
 		this.device = device;
 	}
@@ -66,6 +66,24 @@ public class DeviceProxy extends KrollProxy {
 	public int getType() {
 		return device.getType();
 	}
+	
+	
+	@Kroll.method
+	public KrollDict getProperties() {
+		KrollDict res = new KrollDict();
+		res.put("manufacturer", device.getProperties()
+                .getString(MidiDeviceInfo.PROPERTY_MANUFACTURER));
+		res.put("product", device.getProperties()
+                .getString(MidiDeviceInfo.PROPERTY_PRODUCT));
+		res.put("name", device.getProperties()
+                .getString(MidiDeviceInfo.PROPERTY_NAME));
+		res.put("version", device.getProperties()
+                .getString(MidiDeviceInfo.PROPERTY_VERSION));
+		res.put("btdevice", device.getProperties()
+                .getString(MidiDeviceInfo.PROPERTY_BLUETOOTH_DEVICE));
+		return res;
+	}
+	
 	
 	@Kroll.getProperty
 	@Kroll.method

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiManager;
+import android.os.Looper;
 
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.kroll.common.TiConfig;
@@ -67,9 +68,16 @@ public class MidimanagerModule extends KrollModule {
 	}
 
 	@Kroll.method
-	@Kroll.setProperty
-	public void setExampleProp(String value) {
-		Log.d(LCAT, "set example property: " + value);
+
+	public void openDevice(DeviceProxy proxy) {
+		MidiDeviceInfo device = proxy.device;
+		mm.openDevice(device, 
+				
+		    null,
+		     
+		    null
+		     );
+		
 	}
 
 }
