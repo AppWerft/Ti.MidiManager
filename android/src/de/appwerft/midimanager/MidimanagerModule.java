@@ -12,6 +12,10 @@ import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 
 import org.appcelerator.titanium.TiApplication;
+
+import android.content.Context;
+import android.content.pm.PackageManager;
+
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.kroll.common.TiConfig;
 
@@ -23,7 +27,7 @@ public class MidimanagerModule extends KrollModule
 	// Standard Debugging variables
 	private static final String LCAT = "MidimanagerModule";
 	private static final boolean DBG = TiConfig.LOGD;
-
+	private static Context ctx;
 	// You can define constants with @Kroll.constant, for example:
 	// @Kroll.constant public static final String EXTERNAL_NAME = value;
 
@@ -36,15 +40,16 @@ public class MidimanagerModule extends KrollModule
 	public static void onAppCreate(TiApplication app)
 	{
 		Log.d(LCAT, "inside onAppCreate");
+		ctx=app.getApplicationContext();
 		// put module init code that needs to run when the application is created
 	}
 
 	// Methods
 	@Kroll.method
-	public String example()
+	public boolean hasSystemFeature()
 	{
-		Log.d(LCAT, "example called");
-		return "hello world";
+		return ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI);
+
 	}
 
 	// Properties
