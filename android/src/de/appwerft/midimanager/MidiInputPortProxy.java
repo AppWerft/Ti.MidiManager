@@ -24,35 +24,21 @@ import android.app.Activity;
 import android.media.midi.MidiDeviceInfo.PortInfo;
 import android.media.midi.MidiInputPort;
 
-// This proxy can be created by calling Midimanager.createExample({message: "hello world"})
+
 @Kroll.proxy(creatableInModule = MidimanagerModule.class)
-public class MidiOutputPortProxy extends KrollProxy {
-	// Standard Debugging variables
+public class MidiInputPortProxy extends KrollProxy {
 	private static final String LCAT = "ExampleProxy";
-	private static final boolean DBG = TiConfig.LOGD;
-	private MidiInputPort port;
+
+	public MidiInputPort port;
 
 	// Constructor
-	public  MidiOutputPortProxy() {
+	public  MidiInputPortProxy() {
 		super();
 	}
 
 	// Constructor
-	public  MidiOutputPortProxy(MidiInputPort port) {
+	public  MidiInputPortProxy(MidiInputPort port) {
 		super();
 		this.port = port;
 	}
-
-	// Handle creation options
-	@Override
-	public void handleCreationDict(KrollDict options) {
-		super.handleCreationDict(options);
-
-		if (options.containsKey("message")) {
-			Log.d(LCAT, "example created with message: " + options.get("message"));
-		}
-	}
-
-	
-	
 }

@@ -13,83 +13,54 @@ import java.util.ArrayList;
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollProxy;
 import org.appcelerator.kroll.annotations.Kroll;
-import org.appcelerator.titanium.TiC;
-import org.appcelerator.kroll.common.Log;
-import org.appcelerator.kroll.common.TiConfig;
-import org.appcelerator.titanium.util.TiConvert;
-import org.appcelerator.titanium.proxy.TiViewProxy;
-import org.appcelerator.titanium.view.TiCompositeLayout;
-import org.appcelerator.titanium.view.TiCompositeLayout.LayoutArrangement;
-import org.appcelerator.titanium.view.TiUIView;
 
-import android.app.Activity;
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiDeviceInfo.PortInfo;
 
-// This proxy can be created by calling Midimanager.createExample({message: "hello world"})
 @Kroll.proxy(creatableInModule = MidimanagerModule.class)
-public class DeviceProxy extends KrollProxy {
-	// Standard Debugging variables
+public class MidiDeviceInfoProxy extends KrollProxy {
+
 	private static final String LCAT = "ExampleProxy";
-	private static final boolean DBG = TiConfig.LOGD;
 
-	public MidiDeviceInfo device;
+	public MidiDeviceInfo deviceinfo;
 
-	// Constructor
-	public DeviceProxy() {
+	public MidiDeviceInfoProxy() {
 		super();
 	}
 
-	// Constructor
-	public DeviceProxy(MidiDeviceInfo device) {
+	public MidiDeviceInfoProxy(MidiDeviceInfo deviceinfo) {
 		super();
-		this.device = device;
-	}
-
-	// Handle creation options
-	@Override
-	public void handleCreationDict(KrollDict options) {
-		super.handleCreationDict(options);
-
-		if (options.containsKey("message")) {
-			Log.d(LCAT, "example created with message: " + options.get("message"));
-		}
+		this.deviceinfo = deviceinfo;
 	}
 
 	@Kroll.getProperty
 	@Kroll.method
 	public int getMessage() {
-		return device.getId();
+		return deviceinfo.getId();
 	}
+
 	@Kroll.getProperty
 	@Kroll.method
 	public int getType() {
-		return device.getType();
+		return deviceinfo.getType();
 	}
-	
-	
+
 	@Kroll.method
 	public KrollDict getProperties() {
 		KrollDict res = new KrollDict();
-		res.put("manufacturer", device.getProperties()
-                .getString(MidiDeviceInfo.PROPERTY_MANUFACTURER));
-		res.put("product", device.getProperties()
-                .getString(MidiDeviceInfo.PROPERTY_PRODUCT));
-		res.put("name", device.getProperties()
-                .getString(MidiDeviceInfo.PROPERTY_NAME));
-		res.put("version", device.getProperties()
-                .getString(MidiDeviceInfo.PROPERTY_VERSION));
-		res.put("btdevice", device.getProperties()
-                .getString(MidiDeviceInfo.PROPERTY_BLUETOOTH_DEVICE));
+		res.put("manufacturer", deviceinfo.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER));
+		res.put("product", deviceinfo.getProperties().getString(MidiDeviceInfo.PROPERTY_PRODUCT));
+		res.put("name", deviceinfo.getProperties().getString(MidiDeviceInfo.PROPERTY_NAME));
+		res.put("version", deviceinfo.getProperties().getString(MidiDeviceInfo.PROPERTY_VERSION));
+		res.put("btdevice", deviceinfo.getProperties().getString(MidiDeviceInfo.PROPERTY_BLUETOOTH_DEVICE));
 		return res;
 	}
-	
-	
+
 	@Kroll.getProperty
 	@Kroll.method
 	public Object[] getPorts() {
 		ArrayList<PortProxy> portList = new ArrayList<PortProxy>();
-		for (PortInfo port :  device.getPorts()) {
+		for (PortInfo port : deviceinfo.getPorts()) {
 			portList.add(new PortProxy(port));
 		}
 		return portList.toArray();
