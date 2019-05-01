@@ -23,7 +23,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-@Kroll.module(name = "Midimanager")
+@Kroll.module(parentModule = MidimanagerModule.class)
 public class BluetoothLeScannerModule extends MidimanagerModule {
 
 	// Standard Debugging variables
@@ -135,3 +135,4 @@ public class BluetoothLeScannerModule extends MidimanagerModule {
 
 	};
 }
+// https://recordnotfound.com/BLE-MIDI-for-Android-kshoji-80185
