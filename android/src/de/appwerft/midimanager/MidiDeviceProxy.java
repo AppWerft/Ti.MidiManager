@@ -23,6 +23,7 @@ import org.appcelerator.titanium.view.TiCompositeLayout.LayoutArrangement;
 import org.appcelerator.titanium.view.TiUIView;
 
 import android.app.Activity;
+import android.media.midi.MidiDevice;
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiDeviceInfo.PortInfo;
 
@@ -33,7 +34,7 @@ public class MidiDeviceProxy extends KrollProxy {
 	private static final String LCAT = "ExampleProxy";
 	private static final boolean DBG = TiConfig.LOGD;
 
-	public MidiDeviceInfo device;
+	public MidiDevice device;
 
 	// Constructor
 	public MidiDeviceProxy() {
@@ -41,7 +42,7 @@ public class MidiDeviceProxy extends KrollProxy {
 	}
 
 	// Constructor
-	public MidiDeviceProxy(MidiDeviceInfo device) {
+	public MidiDeviceProxy(MidiDevice device) {
 		super();
 		this.device = device;
 	}
@@ -55,44 +56,12 @@ public class MidiDeviceProxy extends KrollProxy {
 			Log.d(LCAT, "example created with message: " + options.get("message"));
 		}
 	}
-
-	@Kroll.getProperty
-	@Kroll.method
-	public int getMessage() {
-		return device.getId();
-	}
-	@Kroll.getProperty
-	@Kroll.method
-	public int getType() {
-		return device.getType();
-	}
-	
-	
-	@Kroll.method
-	public KrollDict getProperties() {
-		KrollDict res = new KrollDict();
-		res.put("manufacturer", device.getProperties()
-                .getString(MidiDeviceInfo.PROPERTY_MANUFACTURER));
-		res.put("product", device.getProperties()
-                .getString(MidiDeviceInfo.PROPERTY_PRODUCT));
-		res.put("name", device.getProperties()
-                .getString(MidiDeviceInfo.PROPERTY_NAME));
-		res.put("version", device.getProperties()
-                .getString(MidiDeviceInfo.PROPERTY_VERSION));
-		res.put("btdevice", device.getProperties()
-                .getString(MidiDeviceInfo.PROPERTY_BLUETOOTH_DEVICE));
-		return res;
-	}
-	
-	
-	@Kroll.getProperty
-	@Kroll.method
-	public Object[] getPorts() {
-		ArrayList<PortProxy> portList = new ArrayList<PortProxy>();
-		for (PortInfo port :  device.getPorts()) {
-			portList.add(new PortProxy(port));
-		}
-		return portList.toArray();
-	}
-
+@Kroll.method
+public MidiDeviceInfoProxy getInfo() {
+	return new MidiDeviceInfoProxy(device.getInfo());
+}
+@Kroll.method
+public MidiInputPortProxy openInputPort(int portNumber) {
+	return new MidiInputPortProxy(device.openInputPort(portNumber));
+}
 }

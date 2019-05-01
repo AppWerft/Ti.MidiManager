@@ -77,3 +77,36 @@ port.send({
 	payload : [0x90,60,127] // note on, middle c, max. velocity 
 });
 ```
+
+## Using MIDI Over Bluetooth LE
+Request Location Permission for BTLE
+
+Applications that scan for Bluetooth devices must request permission in the manifest file. This LOCATION permission is required because it may be possible to guess the location of an Android device by seeing which BTLE devices are nearby.
+
+ ```
+ <uses-permission android:name="android.permission.BLUETOOTH"/>
+ <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+ <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+ ```
+
+Apps must also request location permission from the user at run-time. 
+
+## Scan for MIDI Devices
+
+The app will only want to see MIDI devices and not mice or other non-MIDI devices. So construct a ScanFilter using the UUID for standard MIDI over BTLE.
+
+```
+MIDI over BTLE UUID = "03B80E5A-EDE8-4B33-A751-6CE34EC4C700"
+```
+
+## Open a MIDI Bluetooth Device
+
+```js
+Midi.BluetoothLeScanner.startScan()
+Midi.BluetoothLeScanner.onFound = function(e) {
+	// select one
+	Midi.openBluetoothDevice(bluetoothDevice);
+}
+ 
+```
+Once the MIDI/BTLE device has been opened by one app then it will also become available to other apps using the MIDI device discovery calls described above. 

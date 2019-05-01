@@ -31,12 +31,12 @@ public class MidiInputPortProxy extends KrollProxy {
 
 	public MidiInputPort port;
 
-	// Constructor
+	
 	public  MidiInputPortProxy() {
 		super();
 	}
 
-	// Constructor
+	
 	public  MidiInputPortProxy(MidiInputPort port) {
 		super();
 		this.port = port;
