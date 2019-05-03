@@ -1,6 +1,9 @@
 # Ti.MidiManager
 
- This Titanium module provides an interface for sending and receiving messages using the standard MIDI event protocol over USB, Bluetooth LE, and virtual (inter-app) transports.
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/MIDI_LOGO.jpg" width=300 />
+<img src="http://mfg.fhstp.ac.at/cms/wp-content/uploads/2018/06/2.jpg" width=300 />
+
+This Titanium module provides an interface for sending and receiving messages using the standard MIDI event protocol over USB, Bluetooth LE, and virtual (inter-app) transports.
 
 ### Overview
 
@@ -119,6 +122,9 @@ if (BLE.isBleSupported()) {
 }
 ```
 ## Open a MIDI Bluetooth Device
+
+<img src="https://cdn-learn.adafruit.com/assets/assets/000/066/491/medium800/bluefruit___ble_BLE_MIDI.jpg?1543295718" width=600 />
+
 
 ```js
 const MIDI = require("de.appwerft.midimanager");
