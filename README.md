@@ -98,15 +98,40 @@ The app will only want to see MIDI devices and not mice or other non-MIDI device
 ```
 MIDI over BTLE UUID = "03B80E5A-EDE8-4B33-A751-6CE34EC4C700"
 ```
+For this task you can use the Titanium module `de.appwerft.bluetoothmanager`:
 
+```
+const BLE = require('de.appwerft.bluetoothmanager').BLE;
+if (BLE.isBleSupported()) {
+	BLE.startScan({
+		onfound : function(e) {
+			console.log(e.device);
+			console.log(e.name);
+			console.log(e.address);
+			console.log(e.rssi);
+			console.log(e.type);
+		},
+		onstatechanged : function(e) {
+		},
+		onerror : function(e) {
+		}
+	});
+}
+```
 ## Open a MIDI Bluetooth Device
 
 ```js
-Midi.BluetoothLeScanner.startScan()
-Midi.BluetoothLeScanner.onFound = function(e) {
-	// select one
-	Midi.openBluetoothDevice(bluetoothDevice);
-}
- 
+const MIDI = require("de.appwerft.midimanager");
+const BLE = require('de.appwerft.bluetoothmanager').BLE;
+
+BLE.startScan({
+		onfound : function(e) {
+			MIDI.openBluetoothDevice(e.device);
+		}
+});
+	
 ```
-Once the MIDI/BTLE device has been opened by one app then it will also become available to other apps using the MIDI device discovery calls described above. 
+There are more parameters for scanner, i.e filter for devices. See more at [repo Ti.BluetoothManager](https://github.com/AppWerft/Ti.BluetoothManager#bluetoothle)
+
+
+Once the MIDI/BTLE device has been opened by one app then it will also become available to other apps using the MIDI device discovery calls described above. (https://developer.android.com/reference/android/media/midi/package-summary)
