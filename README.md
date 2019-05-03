@@ -123,7 +123,7 @@ if (BLE.isBleSupported()) {
 ```
 ## Open a MIDI Bluetooth Device
 
-<img src="https://cdn-learn.adafruit.com/assets/assets/000/066/491/medium800/bluefruit___ble_BLE_MIDI.jpg?1543295718" width=600 />
+<img src="https://cdn-learn.adafruit.com/assets/assets/000/066/491/medium800/bluefruit___ble_BLE_MIDI.jpg?1543295718" width=440 />
 
 
 ```js
@@ -131,9 +131,12 @@ const MIDI = require("de.appwerft.midimanager");
 const BLE = require('de.appwerft.bluetoothmanager').BLE;
 
 BLE.startScan({
-		onfound : function(e) {
-			MIDI.openBluetoothDevice(e.device);
-		}
+	scanfilters : BLE.createScanfilter({
+			uuid : [BLE.UUID_MIDIOVERBLE],
+   }),
+	onfound : function(e) {
+		MIDI.openBluetoothDevice(e.device);
+	}
 });
 	
 ```
